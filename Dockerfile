@@ -20,9 +20,12 @@ RUN pip install -r /root/pip_requirements_stage1.txt
 RUN pip install -r /root/pip_requirements_stage2.txt
 RUN pip install -r /root/pip_requirements_stage3.txt
 
-# Add user Alan
+# Add user Alan (with group, password, sudo)
 RUN groupadd -g 1000 alan \
-  && useradd -m -u 1000 -s /bin/bash -g alan alan
+  && useradd -m -u 1000 -s /bin/bash -g alan alan \
+  && echo 'alan:alan' | chpasswd \
+  && adduser alan sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 WORKDIR /home/alan
 ADD tmux_start /home/alan/
