@@ -1,4 +1,5 @@
 #!/bin/sh
+byobu-ctrl-a screen
 # Change the current directory to your working project folder
 #cd /home/alan/dev/rule_the_world_project/
 cd /home/alan

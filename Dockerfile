@@ -4,7 +4,6 @@
 #
 
 FROM phusion/baseimage:0.9.16
-#FROM ubuntu:14.04.2
 MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 RUN apt-get update
@@ -27,6 +26,9 @@ RUN groupadd alan \
 
 WORKDIR /home/alan
 ADD tmux_start /home/alan/
+
+# Set default byobu shortcut behaviour to screen
+RUN /sbin/setuser alan byobu-ctrl-a screen
 
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
