@@ -1,6 +1,6 @@
 # docker build -t devpy .
 #
-# docker run -i -t --rm -v ~/dev:/home/developer/dev devpy
+# docker run -i -t --rm -v ~/dev:/home/alan/dev devpy
 #
 
 FROM phusion/baseimage:0.9.16
@@ -21,7 +21,7 @@ RUN pip install -r /root/pip_requirements_stage2.txt
 RUN pip install -r /root/pip_requirements_stage3.txt
 
 # Add user Alan
-RUN groupadd alan \
+RUN groupadd -g 1000 alan \
   && useradd -m -u 1000 -s /bin/bash -g alan alan
 
 WORKDIR /home/alan
@@ -29,6 +29,11 @@ ADD tmux_start /home/alan/
 
 # Set default byobu shortcut behaviour to screen
 RUN /sbin/setuser alan byobu-ctrl-a screen
+
+# Add locale
+RUN locale-gen fr_FR.UTF-8 \
+  && update-locale LANG=fr_FR.UTF-8
+ADD bash_profile /home/alan/.bash_profile
 
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
