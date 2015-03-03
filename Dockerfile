@@ -22,7 +22,7 @@ RUN pip install -r /root/pip_requirements_stage3.txt
 
 # Add user Alan
 RUN groupadd alan \
-  && useradd -m -u 1000 -g alan alan
+  && useradd -m -u 1000 -s /bin/bash -g alan alan
 
 WORKDIR /home/alan
 ADD tmux_start /home/alan/
