@@ -36,7 +36,7 @@ RUN /sbin/setuser alan byobu-ctrl-a screen
 # Add locale
 RUN locale-gen fr_FR.UTF-8 \
   && update-locale LANG=fr_FR.UTF-8
-ADD bash_profile /home/alan/.bash_profile
+ADD bashrc /home/alan/.bashrc
 
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
