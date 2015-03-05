@@ -1,4 +1,0 @@
-matplotlib==1.1.1
-numexpr==2.0.1
-scipy==0.10.1
-scikits.statsmodels==0.3.1
