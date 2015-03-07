@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# see README.md for usage
+#
 # Should use : https://github.com/tutumcloud/docker-builder
 
 docker login
@@ -7,11 +8,11 @@ docker login
 docker build -t phentz/devionic:latest devionic/.
 docker push phentz/devionic:latest
 
-#docker build -t phentz/devionic:20140304 devionic/.
-#docker push phentz/devionic:20140304
+#docker build -t phentz/devionic:20150307 devionic/.
+#docker push phentz/devionic:20150307
 
 docker build -t phentz/devpy:latest devpy/.
 docker push phentz/devpy:latest
 
-#docker build -t phentz/devpy:20140304 devpy/.
-#docker push phentz/devpy:20140304
+#docker build -t phentz/devpy:20150307 devpy/.
+#docker push phentz/devpy:20150307

@@ -42,6 +42,16 @@ docker run -i -t --rm -v ~/dev:/home/alan/dev devpy
 git tag
 ```
 
+```
+git tag 20150305
+```
+
+
+```
+git push --tags
+```
+
+
 # TODO
 
 * Add python 3 support in notebook
