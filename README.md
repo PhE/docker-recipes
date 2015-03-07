@@ -12,14 +12,21 @@ A collection of DockerFile used to speed up new development environment creation
 
 # Install
 
+
+```
+docker login
+```
+
 To build a Docker image, go to one folder containing a DockerFile,
 then build the image :
 
 ```
-cd devpy
-docker build -t devpy .
+docker build -t phentz/devpy:latest devpy/.
 ```
 
+```
+docker build -t phentz/devionic:latest devionic/.
+```
 
 # Usage
 
@@ -28,3 +35,23 @@ You can start a container based on a previously generated image with :
 ```
 docker run -i -t --rm -v ~/dev:/home/alan/dev devpy
 ```
+
+# Add a tag
+
+```
+git tag
+```
+
+# TODO
+
+* Add python 3 support in notebook
+* Add terminal support in notebook
+* Add ionic
+* Add cordova
+* Add Android SDK for emulation
+* Add couchdb
+* Add selenium
+* Add protractor
+* Add redis
+* Add crossbar.io
+* Add web2py

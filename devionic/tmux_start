@@ -7,10 +7,17 @@ cd /home/alan
 #byobu-tmux new-session -d bin/notebook
 byobu-tmux new-session -d "ipython notebook --ip=*"
 byobu-tmux split-window -v
+#byobu-tmux split-window -v "couchdb"
+#byobu-tmux split-window -v 'echo 1 | ionic address && ionic serve'
 byobu-tmux split-window -h htop
 byobu-tmux select-pane -t 0
 byobu-tmux split-window -h
 byobu-tmux new-window
 byobu-tmux select-window -t 0
+
+# load model to couchdb
+#cd couchdb && sleep 3 && couchapp push http://localhost:5984/capdemat
+# load data to couchdb
+#curl -d @/tmp/db.json -H "Content-type: application/json" -X POST http://127.0.0.1:5984/[mydatabase]/_bulk_docs
 
 byobu-tmux -2 attach-session -d
