@@ -1,6 +1,6 @@
-# docker build -t devionic .
+# devionic/DickerFile
 #
-# docker run -i -t --rm -v ~/dev:/home/alan/dev devionic
+# see ../README.md for usage
 #
 
 FROM phentz/docker-devpy:latest
@@ -21,19 +21,16 @@ RUN mkdir /var/run/couchdb
 ADD couchdb.ini /etc/couchdb/local.ini
 #RUN npm install -g add-cors-to-couchdb && \
 #  add-cors-to-couchdb
-#RUN pip install couchapp
+RUN pip install couchapp
 
 # nodejs, ionic, stuff
 # cf https://registry.hub.docker.com/u/nicopace/ionic-cordova-android-vagrant-/dockerfile/
 RUN npm install -g cordova \
   && npm install -g ionic \
   && npm install -g bower
-#  && ln -s /usr/bin/nodejs /usr/bin/node
 
 # usefull ? runas alan ?
 #RUN bower --allow-root install | xargs echo
 
+# Use parent tmux session script
 #ADD tmux_start /home/alan/
-
-CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
-#CMD ["/sbin/setuser", "alan", "/bin/bash"]
