@@ -33,7 +33,7 @@ docker build -t phentz/devionic:latest devionic/.
 You can start a container based on a previously generated image with :
 
 ```
-docker run -i -t --rm -v ~/dev:/home/alan/dev devpy
+docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 ```
 
 # Add a tag

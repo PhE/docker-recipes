@@ -5,9 +5,9 @@ byobu-ctrl-a screen
 cd /home/alan
 
 #byobu-tmux new-session -d bin/notebook
-byobu-tmux new-session -d "ipython notebook --ip=*"
-byobu-tmux split-window -v
-#byobu-tmux split-window -v "couchdb"
+byobu-tmux new-session -d "ipython notebook --ip=* --no-browser"
+byobu-tmux split-window -v "couchdb -a /home/alan/couchdb.ini"
+byobu-tmux split-window -v "lynx /home/alan/README.html"
 #byobu-tmux split-window -v 'echo 1 | ionic address && ionic serve'
 byobu-tmux split-window -h htop
 byobu-tmux select-pane -t 0

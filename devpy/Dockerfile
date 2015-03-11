@@ -44,6 +44,9 @@ RUN locale-gen fr_FR.UTF-8 \
   && update-locale LANG=fr_FR.UTF-8
 ADD bashrc /home/alan/.bashrc
 
+# Tools for browsing markdown files in console
+RUN apt-get install -y pandoc lynx
+
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
