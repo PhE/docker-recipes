@@ -30,7 +30,16 @@ docker build -t phentz/devionic:latest devionic/.
 
 # Usage
 
-You can start a container based on a previously generated image with :
+
+Simple case of launching a new container :
+
+```
+docker run -i -t --rm phentz/devpy
+```
+
+Want to code on an existing repo on your host ?
+We assume your repo is under ~/dev.
+Start a container with :
 
 ```
 docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy

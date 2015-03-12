@@ -19,6 +19,7 @@ RUN npm install -g cordova \
 # The version in the repo doesn't handle CORS, so we need a more recent one,
 # at least 1.6.1 :
 # cf https://launchpad.net/~couchdb/+archive/ubuntu/stable
+ENV COUCH http://127.0.0.1:5984
 RUN apt-get install -y software-properties-common && \
     add-apt-repository ppa:couchdb/stable -y && \
     apt-get update -y && \
@@ -33,22 +34,20 @@ RUN chown -R alan:alan /etc/couchdb && \
   chown -R alan:alan /var/run/couchdb && \
   chown -R alan:alan /var/run/couchdb
 # Filesystem sync for couchdb dev via git
-RUN pip install couchapp
+RUN pip install couchapp couchdb
 
 # Create user and load dummy data
-ADD data_*.json /tmp/
-RUN /sbin/setuser alan couchdb -b -a /home/alan/couchdb.ini && sleep 2 && \
-  COUCH=http://localhost:5984 && \
-  curl -HContent-Type:application/json \
-    -vXPUT $COUCH/_users/org.couchdb.user:toto \
-    --data-binary '{"_id": "org.couchdb.user:toto","name": "toto","roles": ["poc"],"type": "user","password": "titi"}' \
-  curl -X PUT http://localhost:5984/dummy && \
-  curl -d @/tmp/data_dummy.json -H "Content-type: application/json" \
-    -X POST http://localhost:5984/dummy/_bulk_docs && \
-  /sbin/setuser alan couchdb -d && \
-  rm /tmp/data_*.json
-
 # COUCH=http://ADMIN_USERNAME:ADMIN_PASSWORD@localhost:5984
+ADD data_*.mime /tmp/
+RUN /sbin/setuser alan couchdb -b -a /home/alan/couchdb.ini && sleep 2 && \
+  curl -X PUT http://127.0.0.1:5984/dummy && \
+  couchdb-load --input=/tmp/data_dummy.mime http://127.0.0.1:5984/dummy && \
+#  curl -HContent-Type:application/json \
+#    -vXPUT http://127.0.0.1:5984/_users/org.couchdb.user:toto \
+#    --data-binary '{"_id": "org.couchdb.user:toto","name": "toto","roles": ["poc"],"type": "user","password": "titi"}' \
+  sleep 2 && /sbin/setuser alan couchdb -d && \
+  rm /tmp/data_*.mime
+
 
 # usefull ? runas alan ?
 #RUN bower --allow-root install | xargs echo
