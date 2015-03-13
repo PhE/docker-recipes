@@ -45,7 +45,10 @@ Start a container with :
 docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 ```
 
-# Add a tag
+# Pushing a new release
+
+
+Add a tag
 
 ```
 git tag
@@ -59,6 +62,17 @@ git tag 20150305
 ```
 git push --tags
 ```
+
+NEW_TAG could be 'latest'
+
+```
+export NEW_TAG=20150312
+export IMAGE=devpy
+
+docker build -t phentz/$IMAGE:$NEW_TAG $IMAGE/.
+docker push phentz/$IMAGE:$NEW_TAG
+```
+
 
 
 # TODO
