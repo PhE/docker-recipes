@@ -33,9 +33,6 @@ RUN groupadd -g 1000 alan \
   && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 WORKDIR /home/alan
 
-# Add byobu/tmux sessions launcher script
-ADD tmux_start /home/alan/
-
 # Set default byobu shortcut behaviour to screen (ctrl-A)
 RUN /sbin/setuser alan byobu-ctrl-a screen
 
@@ -46,6 +43,20 @@ ADD bashrc /home/alan/.bashrc
 
 # Tools for browsing markdown files in console
 RUN apt-get install -y pandoc lynx
+
+# Web2py
+RUN apt-get install -y wget unzip
+RUN \
+  cd /tmp \
+  && wget http://www.web2py.com/examples/static/web2py_src.zip \
+  && unzip web2py_src.zip \
+  && chown -R alan:alan web2py \
+  && mv web2py /opt/ \
+  && rm web2py_src.zip
+
+
+# Add byobu/tmux sessions launcher script
+ADD tmux_start /home/alan/
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]

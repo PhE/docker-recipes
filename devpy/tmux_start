@@ -1,12 +1,15 @@
-#!/bin/sh
-byobu-ctrl-a screen
+#!/bin/bash
+echo "Running tmux_start script ..."
+source ~/.bashrc
+
+#byobu-ctrl-a screen
 # Change the current directory to your working project folder
 #cd /home/alan/dev/rule_the_world_project/
 cd /home/alan
 
 #byobu-tmux new-session -d bin/notebook
 byobu-tmux new-session -d "ipython notebook --ip=* --no-browser"
-byobu-tmux split-window -v
+byobu-tmux split-window -v "/opt/web2py/web2py.py -i 0.0.0.0 -a toto -p 7999"
 byobu-tmux split-window -h htop
 byobu-tmux select-pane -t 0
 byobu-tmux split-window -h
