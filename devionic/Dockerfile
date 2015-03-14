@@ -55,5 +55,5 @@ RUN /sbin/setuser alan couchdb -b -a /home/alan/couchdb.ini && sleep 2 && \
 ADD README.md /home/alan/
 RUN pandoc /home/alan/README.md -o /home/alan/README.html
 
-# Use parent tmux session script
+# tmux start session script
 ADD tmux_start /home/alan/

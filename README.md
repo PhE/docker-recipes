@@ -87,4 +87,4 @@ docker push phentz/$IMAGE:$NEW_TAG
 * Add protractor
 * Add redis
 * Add crossbar.io
-* Add web2py
+* Add web2py (with https or open admin http)

@@ -58,6 +58,9 @@ RUN \
 # Add byobu/tmux sessions launcher script
 ADD tmux_start /home/alan/
 
+# vim (if you prefer to edit your code inside the container)
+RUN apt-get install -y vim
+
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
