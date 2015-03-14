@@ -61,6 +61,10 @@ ADD tmux_start /home/alan/
 # vim (if you prefer to edit your code inside the container)
 RUN apt-get install -y vim
 
+# The default folder where your target dev project should be
+# This folder could be used to mount a physical folder via the -v docker option
+RUN mkdir /home/alan/dev
+
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]

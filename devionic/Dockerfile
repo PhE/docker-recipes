@@ -52,6 +52,12 @@ RUN /sbin/setuser alan couchdb -b -a /home/alan/couchdb.ini && sleep 2 && \
 # usefull ? runas alan ?
 #RUN bower --allow-root install | xargs echo
 
+# Create an empty ionic project
+# echo n for 'no' to the ionic.io question
+RUN \
+  cd /home/alan/dev \
+  && echo n | ionic start myApp tabs
+
 ADD README.md /home/alan/
 RUN pandoc /home/alan/README.md -o /home/alan/README.html
 

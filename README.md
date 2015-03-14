@@ -63,10 +63,18 @@ git tag 20150305
 git push --tags
 ```
 
-NEW_TAG could be 'latest'
 
 ```
 export NEW_TAG=20150312
+```
+
+or
+
+```
+export NEW_TAG=latest
+```
+
+```
 export IMAGE=devpy
 
 docker build -t phentz/$IMAGE:$NEW_TAG $IMAGE/.
