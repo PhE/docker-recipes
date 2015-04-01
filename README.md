@@ -47,22 +47,7 @@ docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 
 # Pushing a new release
 
-
-Add a tag
-
-```
-git tag
-```
-
-```
-git tag 20150305
-```
-
-
-```
-git push --tags
-```
-
+Degine the release tag :
 
 ```
 export NEW_TAG=20150312
@@ -72,6 +57,25 @@ or
 
 ```
 export NEW_TAG=latest
+```
+
+
+List existing tags
+
+```
+git tag
+```
+
+Add a tag
+
+```
+git tag $NEW_TAG
+```
+
+Push tags to remote repository
+
+```
+git push --tags
 ```
 
 ```
