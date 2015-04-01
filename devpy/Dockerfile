@@ -14,6 +14,7 @@ RUN apt-get install -y git byobu htop
 
 # Python dev stuff and depedencies not in pip packages
 RUN apt-get install -y python-pip python-dev \
+  libxml2-dev libxslt1-dev \
   gfortran libopenblas-dev liblapack-dev \
   libfreetype6-dev libhdf5-serial-dev liblzo2-dev libbz2-dev \
   pkg-config libpng-dev \
