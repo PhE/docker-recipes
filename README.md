@@ -10,6 +10,9 @@ A collection of DockerFile used to speed up new development environment creation
 * A byobu/tmux startup script to ease multiple commands/process launch
 * A bunch of Python packages usefull to start a fresh project
 
+* Redis server
+* jupyter server
+
 # Install
 
 

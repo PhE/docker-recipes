@@ -7,7 +7,7 @@ FROM phusion/baseimage:0.9.16
 MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update
+RUN apt-get update -y
 
 # Usefull tools
 RUN apt-get install -y git byobu htop
@@ -55,6 +55,9 @@ RUN \
   && mv web2py /opt/ \
   && rm web2py_src.zip
 
+# Redis and jupyter redis kernel
+RUN apt-get install -y redis-server \
+  && pip install redis_kernel
 
 # Add byobu/tmux sessions launcher script
 ADD tmux_start /home/alan/
