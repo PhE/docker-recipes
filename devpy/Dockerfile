@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -y
 
 # Usefull tools
-RUN apt-get install -y git byobu htop
+RUN apt-get install -y git byobu htop p7zip-full unzip wget
 
 # Python dev stuff and depedencies not in pip packages
 RUN apt-get install -y python-pip python-dev \
@@ -46,7 +46,6 @@ ADD bashrc /home/alan/.bashrc
 RUN apt-get install -y pandoc lynx
 
 # Web2py
-RUN apt-get install -y wget unzip
 RUN \
   cd /tmp \
   && wget http://www.web2py.com/examples/static/web2py_src.zip \
