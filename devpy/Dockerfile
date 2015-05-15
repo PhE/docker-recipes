@@ -7,7 +7,10 @@ FROM phusion/baseimage:0.9.16
 MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update -y
+
+# To force apt-get update :
+RUN touch /tmp/tmp22 \
+  && apt-get update -y
 
 # Usefull tools
 RUN apt-get install -y git byobu htop p7zip-full unzip wget
@@ -22,6 +25,7 @@ RUN apt-get install -y python-pip python-dev \
 
 # Python pip packages
 ADD pip_requirement*.txt /root/
+#RUN pip install -r /root/pip_requirements.txt
 RUN pip install -r /root/pip_requirements_stage1.txt \
   && pip install -r /root/pip_requirements_stage2.txt \
   && pip install -r /root/pip_requirements_stage3.txt
