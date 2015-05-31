@@ -48,6 +48,56 @@ Start a container with :
 docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 ```
 
+Need to launch a graphical application from your container ?
+(Thanks to http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/)
+
+```
+docker run -it --rm \
+    -v $HOME/.Xauthority:/root/.Xauthority \
+    -e DISPLAY \
+    --net=host \
+    phentz/devpy
+```
+
+# Build and run automation
+
+You can have a *docker_build* and *docker_run* scripts in each of your project
+that will automate the process of building the container image and running it.
+
+Let's say that you have a *docker_run* script located in a *bin* folder of
+your project.
+The name of your project is the name of the folder containing
+the *bin* folder.
+Your project if git versioned.
+This script will run the container based on the image *$APP_NAME-$BRANCH*.
+
+```
+# Full path of this script
+SCRIPT=$(readlink -f $0)
+
+# Full path of this script directory
+SCRIPT_FOLDER=$(dirname $SCRIPT)
+
+# Full path of the project (parent directory)
+export APP_FOLDER=$(readlink -f $SCRIPT_FOLDER/..)
+
+# Application/project name
+export APP_NAME=$(basename $APP_FOLDER)
+
+# Current git branch
+BRANCH=$(cd $APP_FOLDER && git rev-parse --abbrev-ref HEAD)
+
+# Run the container
+docker run -it --rm \
+    -v $APP_FOLDER:/var/$APP_NAME \
+    -v $HOME/.Xauthority:/root/.Xauthority \
+    -e DISPLAY \
+    --net=host \
+    $APP_NAME-$BRANCH \
+    $1 $2 $3 $4 $5
+```
+
+
 # Pushing a new release
 
 Degine the release tag :

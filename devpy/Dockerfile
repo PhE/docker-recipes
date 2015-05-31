@@ -68,6 +68,18 @@ ADD tmux_start /home/alan/
 # vim (if you prefer to edit your code inside the container)
 RUN apt-get install -y vim
 
+# atom.io
+RUN cd /tmp \
+  && wget https://atom.io/download/deb -O atom.deb\
+  && apt-get update
+
+RUN apt-get install -y gdebi-core
+#  && dpkg -i atom.deb \
+
+RUN cd /tmp \
+  && gdebi -n atom.deb \
+  && rm atom.deb
+
 # The default folder where your target dev project should be
 # This folder could be used to mount a physical folder via the -v docker option
 RUN mkdir /home/alan/dev

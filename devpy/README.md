@@ -15,3 +15,9 @@ To build and run the image :
 docker build -t phentz/devpy:latest devpy/.
 docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 ```
+
+# Image features
+
+* *atom.io* graphical IDE
+* *jupyter* web-based notebook IDE
+* *vim* console-based IDE
