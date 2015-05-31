@@ -10,8 +10,10 @@ A collection of DockerFile used to speed up new development environment creation
 
 Check out this `relative link`_.
 
-.. _relative link: devpy/README.rst
+.. _devpy: devpy/README.rst
+.. _devionic: devionic/README.rst
 
+Also check out : `devpy/README.rst`
 
 Features
 ============
