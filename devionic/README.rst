@@ -11,3 +11,29 @@ Shortcuts
 * http://CONTAINER_IP::xxxx : Ionic serve
 * http://CONTAINER_IP::8888 : IPython notebook
 * http://CONTAINER_IP::7999 : Web2py
+
+
+
+Build image
+------------------
+
+To build and run the image :
+
+.. code:: Bash
+
+  docker build -t phentz/devionic:latest devionic/.
+  docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devionic
+
+
+Couchdb data
+----------------------
+
+A dummy database is present.
+To update dummy data :
+
+.. code:: Bash
+
+  couchdb-dump http://localhost:5984/dummy2 > data_dummy.mime
+
+
+The couchdb-load conterpart is in the Dockerfile.
