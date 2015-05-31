@@ -1,8 +1,4 @@
-.. toctree::
-   :maxdepth: 2
-
-   devpy
-   devionic
+.. contents:: :local:
 
 docker-recipes
 ====================
@@ -10,6 +6,11 @@ docker-recipes
 My public Docker recipes.
 
 A collection of DockerFile used to speed up new development environment creation.
+
+
+Check out this `relative link`_.
+
+.. _relative link: devpy/README.rst
 
 
 Features
