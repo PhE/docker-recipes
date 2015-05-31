@@ -16,8 +16,9 @@ docker build -t phentz/devpy:latest devpy/.
 docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
 ```
 
-# Image features
+# Tools included
 
+* *chromium* Web browser (launch with chromium-browser --no-sandbox)
 * *atom.io* graphical IDE
 * *jupyter* web-based notebook IDE
 * *vim* console-based IDE

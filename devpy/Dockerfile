@@ -9,23 +9,39 @@ MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 # To force apt-get update :
-RUN touch /tmp/tmp22 \
+RUN touch /tmp/tmp23 \
   && apt-get update -y
 
 # Usefull tools
-RUN apt-get install -y git byobu htop p7zip-full unzip wget
+RUN apt-get install -y \
+  byobu \
+  gdebi-core \
+  git \
+  htop \
+  lynx \
+  p7zip-full \
+  unzip \
+  wget
 
 # Python dev stuff and depedencies not in pip packages
-RUN apt-get install -y python-pip python-dev \
-  libxml2-dev libxslt1-dev \
-  gfortran libopenblas-dev liblapack-dev \
-  libfreetype6-dev libhdf5-serial-dev liblzo2-dev libbz2-dev \
-  pkg-config libpng-dev \
-  build-essential
+RUN apt-get install -y \
+  build-essential \
+  gfortran \
+  libbz2-dev \
+  libfreetype6-dev \
+  libhdf5-serial-dev \
+  liblapack-dev \
+  liblzo2-dev \
+  libopenblas-dev \
+  libpng-dev \
+  libxml2-dev \
+  libxslt1-dev \
+  pkg-config \
+  python-dev \
+  python-pip \
 
 # Python pip packages
 ADD pip_requirement*.txt /root/
-#RUN pip install -r /root/pip_requirements.txt
 RUN pip install -r /root/pip_requirements_stage1.txt \
   && pip install -r /root/pip_requirements_stage2.txt \
   && pip install -r /root/pip_requirements_stage3.txt
@@ -47,7 +63,8 @@ RUN locale-gen fr_FR.UTF-8 \
 ADD bashrc /home/alan/.bashrc
 
 # Tools for browsing markdown files in console
-RUN apt-get install -y pandoc lynx
+#RUN apt-get install -y pandoc lynx
+RUN pip install grip
 
 # Web2py
 RUN \
@@ -62,23 +79,20 @@ RUN \
 RUN apt-get install -y redis-server \
   && pip install redis_kernel
 
-# Add byobu/tmux sessions launcher script
-ADD tmux_start /home/alan/
-
 # vim (if you prefer to edit your code inside the container)
 RUN apt-get install -y vim
 
 # atom.io
 RUN cd /tmp \
   && wget https://atom.io/download/deb -O atom.deb\
-  && apt-get update
-
-RUN apt-get install -y gdebi-core
-#  && dpkg -i atom.deb \
-
-RUN cd /tmp \
   && gdebi -n atom.deb \
   && rm atom.deb
+
+# Chromium browser
+RUN apt-get install -y chromium-browser
+
+# Add byobu/tmux sessions launcher script
+ADD tmux_start /home/alan/
 
 # The default folder where your target dev project should be
 # This folder could be used to mount a physical folder via the -v docker option
