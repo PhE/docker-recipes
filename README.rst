@@ -8,15 +8,12 @@ My public Docker recipes.
 A collection of DockerFile used to speed up new development environment creation.
 
 
-Check out this `devpy`_.
-Check out this `devionic`_.
+* `devpy`_ : Python development container
+* `devionic`_: : Ionic development container
 
 .. _devpy: devpy/README.rst
 .. _devionic: devionic/README.rst
 
-Also check out : `devpy/README.rst`
-
-Also check out : `devpy/README.rst`_
 
 Features
 ============
