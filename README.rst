@@ -1,3 +1,9 @@
+.. toctree::
+   :maxdepth: 2
+
+   devpy
+   devionic
+
 docker-recipes
 ====================
 
