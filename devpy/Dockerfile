@@ -39,6 +39,9 @@ RUN apt-get install -y \
   pkg-config \
   python-dev \
   python-pip \
+  texlive-latex-base \
+  texlive-latex-extra \
+  texlive-fonts-recommended
 
 # Python pip packages
 ADD pip_requirement*.txt /root/
@@ -64,7 +67,7 @@ ADD bashrc /home/alan/.bashrc
 
 # Tools for browsing markdown files in console
 #RUN apt-get install -y pandoc lynx
-RUN pip install grip
+#RUN pip install grip
 
 # Web2py
 RUN \

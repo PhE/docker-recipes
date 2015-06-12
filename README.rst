@@ -174,6 +174,4 @@ TODO
 * Add couchdb
 * Add selenium
 * Add protractor
-* Add redis
 * Add crossbar.io
-* Add web2py (with https or open admin http)
