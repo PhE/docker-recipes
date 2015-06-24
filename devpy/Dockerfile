@@ -35,7 +35,8 @@ RUN apt-get install -y \
   libopenblas-dev \
   libpng-dev \
   libxml2-dev \
-  libxslt1-dev \
+  libxslt-dev \
+  lib32z1-dev
   pkg-config \
   python-dev \
   python-pip \
