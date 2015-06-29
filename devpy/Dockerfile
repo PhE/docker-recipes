@@ -36,7 +36,7 @@ RUN apt-get install -y \
   libpng-dev \
   libxml2-dev \
   libxslt-dev \
-  lib32z1-dev
+  lib32z1-dev \
   pkg-config \
   python-dev \
   python-pip \
