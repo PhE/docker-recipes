@@ -58,8 +58,8 @@ RUN \
   cd /home/alan/dev \
   && echo n | ionic start myApp tabs
 
-ADD README.md /home/alan/
-RUN pandoc /home/alan/README.md -o /home/alan/README.html
+#ADD README.rst /home/alan/
+#RUN pandoc /home/alan/README.rst -o /home/alan/README.html
 
 # tmux start session script
 ADD tmux_start /home/alan/

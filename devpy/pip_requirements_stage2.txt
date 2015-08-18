@@ -1,5 +1,5 @@
 matplotlib==1.4.3
 numexpr==2.4.3
-scipy==0.15.1
+scipy==0.16.0
 scikits.statsmodels==0.3.1
 scikit-learn==0.16.1

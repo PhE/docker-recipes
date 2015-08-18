@@ -44,6 +44,14 @@ RUN apt-get install -y \
   texlive-latex-extra \
   texlive-fonts-recommended
 
+# Upgrade pip
+# cf https://github.com/docker/docker/issues/12327
+#RUN cd /tmp \
+#  && wget https://bootstrap.pypa.io/get-pip.py \
+#  && python get-pip.py \
+#  && pip install -U pip
+RUN pip install --upgrade pip==7.1.0
+
 # Python pip packages
 ADD pip_requirement*.txt /root/
 RUN pip install -r /root/pip_requirements_stage1.txt \
@@ -67,8 +75,15 @@ RUN locale-gen fr_FR.UTF-8 \
 ADD bashrc /home/alan/.bashrc
 
 # Tools for browsing markdown files in console
+# and to convert notebook to PDF
 #RUN apt-get install -y pandoc lynx
 #RUN pip install grip
+RUN \
+  cd /tmp \
+  && wget https://github.com/jgm/pandoc/releases/download/1.15.0.5/pandoc-1.15.0.5-1-amd64.deb \
+  && dpkg -i pandoc-1.15.0.5-1-amd64.deb \
+  && apt-get install -f \
+  && rm pandoc-1.15.0.5-1-amd64.deb
 
 # Web2py
 RUN \
@@ -88,12 +103,22 @@ RUN apt-get install -y vim
 
 # atom.io
 RUN cd /tmp \
-  && wget https://atom.io/download/deb -O atom.deb\
+  && apt-get update -y \
+  && wget https://atom.io/download/deb -O atom.deb \
   && gdebi -n atom.deb \
   && rm atom.deb
 
 # Chromium browser
 RUN apt-get install -y chromium-browser
+
+RUN apt-get update \
+  && apt-get dist-upgrade -y
+
+# Google Chrome
+RUN cd /tmp \
+  && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+  && gdebi -n google-chrome*.deb \
+  && rm google-chrome*.deb
 
 # Add byobu/tmux sessions launcher script
 ADD tmux_start /home/alan/
