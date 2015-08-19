@@ -3,17 +3,16 @@
 # see ../README.md for usage
 #
 
-FROM phusion/baseimage:0.9.16
+FROM phusion/baseimage:0.9.17
 MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# To force apt-get update :
-RUN touch /tmp/tmp23 \
-  && apt-get update -y
+# To force apt-get update
+RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
 
 # Usefull tools
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   byobu \
   gdebi-core \
   git \
@@ -24,7 +23,7 @@ RUN apt-get install -y \
   wget
 
 # Python dev stuff and depedencies not in pip packages
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   build-essential \
   gfortran \
   libbz2-dev \
@@ -33,6 +32,7 @@ RUN apt-get install -y \
   liblapack-dev \
   liblzo2-dev \
   libopenblas-dev \
+  libncurses-dev \
   libpng-dev \
   libxml2-dev \
   libxslt-dev \
@@ -53,7 +53,8 @@ RUN apt-get install -y \
 RUN pip install --upgrade pip==7.1.0
 
 # Python pip packages
-ADD pip_requirement*.txt /root/
+# pip list --outdated
+COPY pip_requirement*.txt /root/
 RUN pip install -r /root/pip_requirements_stage1.txt \
   && pip install -r /root/pip_requirements_stage2.txt \
   && pip install -r /root/pip_requirements_stage3.txt
@@ -72,7 +73,7 @@ RUN /sbin/setuser alan byobu-ctrl-a screen
 # Add french locale support
 RUN locale-gen fr_FR.UTF-8 \
   && update-locale LANG=fr_FR.UTF-8
-ADD bashrc /home/alan/.bashrc
+COPY bashrc /home/alan/.bashrc
 
 # Tools for browsing markdown files in console
 # and to convert notebook to PDF
@@ -125,11 +126,19 @@ RUN cd /tmp \
   && rm google-chrome*.deb
 
 # Add byobu/tmux sessions launcher script
-ADD tmux_start /home/alan/
+COPY tmux_start /home/alan/
 
 # The default folder where your target dev project should be
 # This folder could be used to mount a physical folder via the -v docker option
 RUN mkdir /home/alan/dev
+
+# Network services exposed
+# SSH
+EXPOSE 22
+# web2py
+EXPOSE 7999
+# jupyter notebook
+EXPOSE 8888
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
