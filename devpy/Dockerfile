@@ -107,6 +107,10 @@ RUN cd /tmp \
   && wget https://atom.io/download/deb -O atom.deb \
   && gdebi -n atom.deb \
   && rm atom.deb
+# TODO:
+# PYTHON=python2.7 apm install hydrogen
+# install Atom packages
+RUN  apm install file-icons git-plus merge-conflicts minimap
 
 # Chromium browser
 RUN apt-get install -y chromium-browser
