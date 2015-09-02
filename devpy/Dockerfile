@@ -111,7 +111,14 @@ RUN cd /tmp \
 # TODO:
 # PYTHON=python2.7 apm install hydrogen
 # install Atom packages
-RUN  apm install file-icons git-plus merge-conflicts minimap
+RUN /sbin/setuser alan apm install \
+  file-icons \
+  git-plus \
+#  hydrogen \
+  merge-conflicts \
+  minimap \
+  Remote-FTP
+# atom-notebook # manual install
 
 # Chromium browser
 RUN apt-get install -y chromium-browser

@@ -145,14 +145,14 @@ Add a tag
 
 .. code:: Bash
 
-  git tag $NEW_TAG
+  git tag -f $NEW_TAG
 
 
 Push tags to remote repository
 
 .. code:: Bash
 
-  git push --tags
+  git push -f --tags
 
 
 .. code:: Bash
@@ -168,10 +168,8 @@ TODO
 
 * Add python 3 support in notebook
 * Add terminal support in notebook
-* Add ionic
 * Add cordova
 * Add Android SDK for emulation
-* Add couchdb
 * Add selenium
 * Add protractor
 * Add crossbar.io
