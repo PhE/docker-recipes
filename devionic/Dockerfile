@@ -61,5 +61,13 @@ RUN \
 #ADD README.rst /home/alan/
 #RUN pandoc /home/alan/README.rst -o /home/alan/README.html
 
+# Some usefull package
+USER alan
+RUN npm install ws
+
 # tmux start session script
-ADD tmux_start /home/alan/
+COPY tmux_start /home/alan/
+
+# Start the tmux sessions
+#CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
+CMD ["/home/alan/tmux_start"]
