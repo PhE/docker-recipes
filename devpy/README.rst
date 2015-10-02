@@ -10,17 +10,6 @@ Shortcuts
 * http://CONTAINER_IP:7999 : Web2py (admin password : toto)
 
 
-Build image
------------------
-
-To build and run the image :
-
-.. code:: Bash
-
-  docker build -t phentz/devpy:latest devpy/.
-  docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devpy
-
-
 Tools included
 --------------------
 

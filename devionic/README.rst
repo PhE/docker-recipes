@@ -13,18 +13,6 @@ Shortcuts
 * http://CONTAINER_IP::7999 : Web2py
 
 
-
-Build image
-------------------
-
-To build and run the image :
-
-.. code:: Bash
-
-  docker build -t phentz/devionic:latest devionic/.
-  docker run -i -t --rm -v ~/dev:/home/alan/dev phentz/devionic
-
-
 Couchdb data
 ----------------------
 

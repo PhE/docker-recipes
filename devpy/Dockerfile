@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y \
   pkg-config \
   python-dev \
   python-pip \
+  texlive-lang-all \
   texlive-latex-base \
   texlive-latex-extra \
   texlive-fonts-recommended
