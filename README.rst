@@ -173,3 +173,6 @@ TODO
 * Add selenium
 * Add protractor
 * Add crossbar.io
+* Add notebook import feature (cf http://www.motleytech.net/en/2015/09/14/importing-ipython-notebook-another-notebook/)
+* Add sqlalchemy library
+* Add Click library (http://click.pocoo.org/5/)
