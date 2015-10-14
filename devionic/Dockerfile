@@ -69,5 +69,5 @@ RUN npm install ws
 COPY tmux_start /home/alan/
 
 # Start the tmux sessions
-#CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
-CMD ["/home/alan/tmux_start"]
+CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
+#CMD ["/home/alan/tmux_start"]
