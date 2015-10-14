@@ -4,13 +4,12 @@ source ~/.bashrc
 
 # Change the current directory to your working project folder
 #cd /home/alan/dev/rule_the_world_project/
-cd /home/alan/dev/myApp
 
 # ===========================================================================
 # Window 1 : help
 byobu-tmux \
   new-session -d -n help \; \
-  send-keys "lynx /home/alan/README.html" C-m
+  send-keys "lynx /current_dir/README.html" C-m
 
 # ===========================================================================
 # Window 2 : server
@@ -22,7 +21,7 @@ byobu-tmux \
 # lower-left pane
 byobu-tmux \
   split-window -v \; \
-  send-keys "couchdb -a /home/alan/couchdb.ini" C-m
+  send-keys "sudo nginx" C-m
 # lower-right pane
 byobu-tmux \
   split-window -h \; \
@@ -31,7 +30,7 @@ byobu-tmux \
 byobu-tmux \
   select-pane -t 0 \; \
   split-window -h  \; \
-  send-keys 'echo 1 | ionic address && ionic serve' C-m
+  send-keys 'cd /current_dir/sample_ionic && ionic serve --nobrowser --address localhost' C-m
 
 # ===========================================================================
 # Window 3 : shells
@@ -39,6 +38,10 @@ byobu-tmux \
 # upper-left pane
 byobu-tmux \
   new-window -n shell \; \
+  send-keys "sudo mungehosts -l domainname" C-m \; \
+  send-keys "sudo mungehosts -l notebook.domainname" C-m \; \
+  send-keys "sudo mungehosts -l ionic.domainname" C-m \; \
+  send-keys "sudo mungehosts -p" C-m
   send-keys "ifconfig" C-m
 # lower-left pane
 byobu-tmux \
@@ -47,6 +50,7 @@ byobu-tmux \
 byobu-tmux \
   split-window -h
 # upper-right pane
+
 byobu-tmux \
   select-pane -t 0 \; \
   split-window -h \; \
