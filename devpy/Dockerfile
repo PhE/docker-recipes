@@ -45,6 +45,7 @@ RUN apt-get update && apt-get install -y \
   texlive-latex-extra \
   texlive-fonts-recommended
 
+
 # Upgrade pip
 # cf https://github.com/docker/docker/issues/12327
 #RUN cd /tmp \
