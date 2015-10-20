@@ -1,0 +1,16 @@
+#!/bin/sh
+
+DockerBuild () {
+    echo ">>>>> Docker build image $1 tag $2"
+    docker build -t phentz/$1:$2 $1/.
+    # docker push phentz/$1:$2
+}
+
+export NEW_TAG=`date +%Y%m%d`
+git tag -f $NEW_TAG
+git push -f --tags
+
+DockerBuild devpy NEW_TAG
+DockerBuild devionic NEW_TAG
+DockerBuild devpy latest
+DockerBuild devionic latest
