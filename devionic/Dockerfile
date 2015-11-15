@@ -74,6 +74,38 @@ RUN rm -rf /var/lib/apt/lists/* && \
     echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
     chown -R www-data:www-data /var/lib/nginx
 
+
+#------------------------------------------------------------------------------
+# Mongodb
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
+  echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | \
+  tee /etc/apt/sources.list.d/mongodb-org-3.0.list && \
+  apt-get update && \
+  apt-get install -y mongodb-org=3.0.7 && \
+  mkdir -p /current_dir/data/log/mongodb && \
+  mkdir -p /current_dir/data/mongodb
+
+#------------------------------------------------------------------------------
+# chrome extensions
+COPY *_extension_*.zip /home/alan/chrome_ext/
+RUN mkdir -p /home/alan/chrome_ext
+
+# || : is to silent error code because of a corrupt zip
+RUN mkdir -p /home/alan/chrome_ext/jsonview_extension_0_0_32_2 && \
+  cd /home/alan/chrome_ext/jsonview_extension_0_0_32_2 && \
+  unzip /home/alan/chrome_ext/jsonview_extension_0_0_32_2.zip || \
+  :
+
+# || : is to silent error code because of a corrupt zip
+RUN mkdir -p /home/alan/chrome_ext/postman_extension_3_0_24 && \
+  cd /home/alan/chrome_ext/postman_extension_3_0_24 && \
+  unzip /home/alan/chrome_ext/postman_extension_3_0_24.zip || \
+  :
+
+#------------------------------------------------------------------------------
+
+RUN npm install -g live-server
+
 # tmux start session script
 COPY tmux_start /home/alan/
 RUN chown alan:alan /home/alan/tmux_start
@@ -83,4 +115,3 @@ RUN chmod 755 /usr/local/bin/mungehosts
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
-
