@@ -89,13 +89,16 @@ RUN \
   && rm pandoc-1.15.0.5-1-amd64.deb
 
 # Web2py
+# Allow non-SSL connexion for admin
+# Change DEMO_MODE = False to DEMO_MODE = True in 0.py
 RUN \
   cd /tmp \
   && wget http://www.web2py.com/examples/static/web2py_src.zip \
   && unzip web2py_src.zip \
   && chown -R alan:alan web2py \
   && mv web2py /opt/ \
-  && rm web2py_src.zip
+  && rm web2py_src.zip \
+  && sed -i 's/^\(DEMO\_MODE\s*=\s*\).*$/\1True/' /opt/web2py/applications/admin/models/0.py
 
 # Redis and jupyter redis kernel
 RUN apt-get install -y redis-server \
