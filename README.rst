@@ -86,7 +86,7 @@ Let's say that you have a *docker_run* script located in a *bin* folder of
 your project.
 The name of your project is the name of the folder containing
 the *bin* folder.
-Your project if git versioned.
+Your project must be a git repository.
 This script will run the container based on the image *$APP_NAME-$BRANCH*.
 
 .. code:: Bash

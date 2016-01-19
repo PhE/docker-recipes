@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y \
 #  && wget https://bootstrap.pypa.io/get-pip.py \
 #  && python get-pip.py \
 #  && pip install -U pip
-RUN pip install --upgrade pip==7.1.0
+RUN pip install --upgrade pip==7.1.2
 
 # Python pip packages
 # pip list --outdated
@@ -133,6 +133,26 @@ RUN cd /tmp \
   && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
   && gdebi -n google-chrome*.deb \
   && rm google-chrome*.deb
+
+# update python packages
+#TODO: move to pip_requirements
+RUN pip install --upgrade pip || \
+  :
+
+# Python3 setup via miniconda
+#wget https://repo.continuum.io/miniconda/Miniconda3-3.19.0-Linux-x86_64.sh
+RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+  -O /tmp/miniconda.sh \
+  && bash /tmp/miniconda.sh -b -p /opt/miniconda3
+#RUN conda install --file ###
+# R
+RUN wget https://anaconda.org/r/ncurses/5.9/download/linux-64/ncurses-5.9-4.tar.bz2 \
+  && /opt/miniconda3/bin/conda install ncurses-5.9-4.tar.bz2
+RUN wget https://anaconda.org/r/nlopt/2.4.2/download/linux-64/nlopt-2.4.2-1.tar.bz2 \
+  && /opt/miniconda3/bin/conda install nlopt-2.4.2-1.tar.bz2
+RUN wget https://anaconda.org/r/glib/2.43.0/download/linux-64/glib-2.43.0-2.tar.bz2 \
+  && /opt/miniconda3/bin/conda install glib-2.43.0-2.tar.bz2
+RUN /opt/miniconda3/bin/conda install -c r r-essentials
 
 # Add byobu/tmux sessions launcher script
 COPY tmux_start /home/alan/

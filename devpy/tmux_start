@@ -2,6 +2,10 @@
 echo "Running tmux_start script ..."
 source ~/.bashrc
 
+# Path for anaconda bin
+PATH=/opt/miniconda3/bin:\$PATH
+
+
 # Change the current directory to your working project folder
 #cd /home/alan/dev/rule_the_world_project/
 cd /home/alan/dev
