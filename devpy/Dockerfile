@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   python-pip \
   texlive-lang-all \
+  texlive-lang-french \
   texlive-latex-base \
   texlive-latex-extra \
   texlive-fonts-recommended
@@ -106,10 +107,11 @@ RUN apt-get install -y vim
 
 # atom.io
 RUN cd /tmp \
-  && apt-get update -y \
-  && wget https://atom.io/download/deb -O atom.deb \
+  && apt-get update -y
+RUN wget https://atom.io/download/deb -O atom.deb \
   && gdebi -n atom.deb \
   && rm atom.deb
+
 # TODO:
 # PYTHON=python2.7 apm install hydrogen
 # install Atom packages

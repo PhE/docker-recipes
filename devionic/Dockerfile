@@ -7,9 +7,15 @@ FROM phentz/devpy:latest
 MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
+
+# nodejs install
+#RUN apt-get update && \
+#    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - && \
+#    apt-get install -y nodejs
 RUN apt-get update && \
-    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - && \
+    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - && \
     apt-get install -y nodejs
+
 
 # Install Ionic tools
 RUN npm install -g ionic bower cordova
@@ -83,4 +89,3 @@ RUN chmod 755 /usr/local/bin/mungehosts
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/tmux_start"]
-
