@@ -136,6 +136,12 @@ RUN cd /tmp \
   && gdebi -n google-chrome*.deb \
   && rm google-chrome*.deb
 
+RUN pip install -U nltk textblob textblob-fr \
+  && python -c 'import textblob.download_corpora; textblob.download_corpora.download_all()'
+# import textblob.download_corpora
+# textblob.download_corpora.download_all()
+#  && python -m textblob.download_corpora
+
 # Add byobu/tmux sessions launcher script
 COPY tmux_start /home/alan/
 

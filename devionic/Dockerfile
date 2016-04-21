@@ -80,6 +80,8 @@ RUN rm -rf /var/lib/apt/lists/* && \
     echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
     chown -R www-data:www-data /var/lib/nginx
 
+# cucumber stuff ...
+
 # tmux start session script
 COPY tmux_start /home/alan/
 RUN chown alan:alan /home/alan/tmux_start
