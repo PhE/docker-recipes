@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   python-pip \
   texlive-lang-all \
+  texlive-lang-french \
   texlive-latex-base \
   texlive-latex-extra \
   texlive-fonts-recommended
@@ -106,10 +107,11 @@ RUN apt-get install -y vim
 
 # atom.io
 RUN cd /tmp \
-  && apt-get update -y \
-  && wget https://atom.io/download/deb -O atom.deb \
+  && apt-get update -y
+RUN wget https://atom.io/download/deb -O atom.deb \
   && gdebi -n atom.deb \
   && rm atom.deb
+
 # TODO:
 # PYTHON=python2.7 apm install hydrogen
 # install Atom packages
@@ -134,10 +136,6 @@ RUN cd /tmp \
   && gdebi -n google-chrome*.deb \
   && rm google-chrome*.deb
 
-# update python packages
-#TODO: move to pip_requirements
-RUN pip install --upgrade pip || \
-  :
 
 # Python3 setup via miniconda
 #wget https://repo.continuum.io/miniconda/Miniconda3-3.19.0-Linux-x86_64.sh
@@ -153,6 +151,12 @@ RUN wget https://anaconda.org/r/nlopt/2.4.2/download/linux-64/nlopt-2.4.2-1.tar.
 RUN wget https://anaconda.org/r/glib/2.43.0/download/linux-64/glib-2.43.0-2.tar.bz2 \
   && /opt/miniconda3/bin/conda install glib-2.43.0-2.tar.bz2
 RUN /opt/miniconda3/bin/conda install -c r r-essentials
+
+RUN pip install -U nltk textblob textblob-fr \
+  && python -c 'import textblob.download_corpora; textblob.download_corpora.download_all()'
+# import textblob.download_corpora
+# textblob.download_corpora.download_all()
+#  && python -m textblob.download_corpora
 
 # Add byobu/tmux sessions launcher script
 COPY tmux_start /home/alan/
