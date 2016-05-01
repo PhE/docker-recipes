@@ -55,12 +55,16 @@ RUN conda install -y \
     Sphinx \
     openpyxl \
     pytables \
+    seaborn \
     scipy \
     statsmodels \
     scikit-learn \
     xlrd \
     XlsxWriter \
     xlwt
+
+RUN conda install -y -c r \
+    r-essentials
 
 # vim (if you prefer to edit your code inside the container)
 RUN apt-get install -y vim
@@ -91,10 +95,15 @@ RUN \
   ; apt-get install -f --yes \
   && rm pandoc-1.17.0.2-1-amd64.deb
 
-#RUN conda install -y \
-#    mrjob \
-#    textblob \
-#    textblob-fr
+# Netdata
+# usage : /usr/sbin/netdata
+# http://127.0.0.1:19999/
+RUN apt-get install --yes zlib1g-dev gcc make git autoconf \
+  autogen automake pkg-config \
+  && git clone https://github.com/firehol/netdata.git --depth=1 \
+  && cd netdata \
+  && ./netdata-installer.sh --dont-wait
+
 
 #RUN conda install -c https://conda.anaconda.org/nroth df2gspread
 #RUN conda install -c https://conda.anaconda.org/asmeurer mrjob
@@ -110,6 +119,8 @@ COPY startup /home/alan/
 EXPOSE 22
 # jupyter notebook
 EXPOSE 8888
+# netdata
+EXPOSE 19999
 
 RUN mkdir /current_dir
 
