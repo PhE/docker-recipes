@@ -63,6 +63,7 @@ RUN conda install -y \
     XlsxWriter \
     xlwt
 
+
 RUN conda install -y -c r \
     r-essentials
 
@@ -104,12 +105,62 @@ RUN apt-get install --yes zlib1g-dev gcc make git autoconf \
   && cd netdata \
   && ./netdata-installer.sh --dont-wait
 
+# nbpresent
+# cf https://github.com/Anaconda-Platform/nbpresent
+RUN conda install -y -c anaconda-nb-extensions nbpresent
+
+RUN conda install -y cryptography webob
+
+RUN pip install --upgrade \
+  ipython-sql \
+  quantecon \
+  pyotp \
+  pyqrcode
+
+# Julia and iJulia
+#RUN cd /tmp \
+#  && apt-get -y install julia \
+#  && julia -e 'Pkg.init()' \
+#  && julia -e 'Pkg.add("IJulia")' \
+#  && julia -e 'Pkg.add("QuantEcon")' \
+#  && julia -e 'Pkg.add("PyPlot")'
+
+# Torch and iTorch
+#RUN cd /tmp \
+#  && git clone https://github.com/torch/distro.git ~/torch --recursive \
+#  && cd torch; bash install-deps; \
+#  && ./install.sh \
+#  && cd .. \
+#  && git clone https://github.com/facebook/iTorch.git \
+#  && cd iTorch
+#  && luarocks make
+
+# Redis and jupyter redis kernel
+#RUN apt-get install -y redis-server \
+#  && pip install redis_kernel
+#RUN conda install -y -c anaconda redis=2.6.9
+
 
 #RUN conda install -c https://conda.anaconda.org/nroth df2gspread
 #RUN conda install -c https://conda.anaconda.org/asmeurer mrjob
 #RUN conda install -c chdoig -c nbsantos mrjob
 #RUN conda install -c https://conda.anaconda.org/sloria textblob \
 #  && python -m textblob.download_corpora
+
+
+# glusterfs
+RUN apt-get install -y software-properties-common \
+  && add-apt-repository ppa:gluster/glusterfs-3.7 \
+  && apt-get update \
+  && apt-get install -y glusterfs-server
+
+# Add user Alan2 (with group, password, sudo)
+RUN groupadd -g 40561 alan2 \
+  && useradd -m -u 40561 -s /bin/bash -g alan2 alan2 \
+  && echo 'alan2:alan2' | chpasswd \
+  && adduser alan2 sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 
 # Add byobu/tmux sessions launcher script
 COPY startup /home/alan/
