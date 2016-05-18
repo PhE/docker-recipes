@@ -161,9 +161,14 @@ RUN groupadd -g 40561 alan2 \
   && adduser alan2 sudo \
   && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-
 # Add byobu/tmux sessions launcher script
 COPY startup /home/alan/
+
+# Set default byobu shortcut behaviour to screen (ctrl-A)
+RUN /sbin/setuser alan2 byobu-ctrl-a screen
+
+# Add byobu/tmux sessions launcher script
+COPY startup /home/alan2/
 
 # Network services exposed
 # SSH
@@ -176,5 +181,6 @@ EXPOSE 19999
 RUN mkdir /current_dir
 
 # Start the tmux sessions
-CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
+#CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
+CMD ["/sbin/setuser", "alan2", "/home/alan2/startup"]
 #CMD ["/sbin/setuser", "alan", "/bin/bash"]
