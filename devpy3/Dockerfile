@@ -170,6 +170,9 @@ RUN /sbin/setuser alan2 byobu-ctrl-a screen
 # Add byobu/tmux sessions launcher script
 COPY startup /home/alan2/
 
+RUN pip install --upgrade \
+  cppimport
+
 # Network services exposed
 # SSH
 EXPOSE 22
@@ -181,6 +184,5 @@ EXPOSE 19999
 RUN mkdir /current_dir
 
 # Start the tmux sessions
-#CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
-CMD ["/sbin/setuser", "alan2", "/home/alan2/startup"]
-#CMD ["/sbin/setuser", "alan", "/bin/bash"]
+CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
+#CMD ["/sbin/setuser", "alan2", "/home/alan2/startup"]
