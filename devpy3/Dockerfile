@@ -161,17 +161,40 @@ RUN groupadd -g 40561 alan2 \
   && adduser alan2 sudo \
   && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+# Add user Alan3 (with group, password, sudo)
+RUN groupadd -g 1002 alan3 \
+  && useradd -m -u 1002 -s /bin/bash -g alan3 alan3 \
+  && echo 'alan3:alan3' | chpasswd \
+  && adduser alan3 sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 # Add byobu/tmux sessions launcher script
 COPY startup /home/alan/
 
 # Set default byobu shortcut behaviour to screen (ctrl-A)
-RUN /sbin/setuser alan2 byobu-ctrl-a screen
+RUN /sbin/setuser alan3 byobu-ctrl-a screen
 
 # Add byobu/tmux sessions launcher script
-COPY startup /home/alan2/
+COPY startup /home/alan3/
 
 RUN pip install --upgrade \
   cppimport
+
+
+# Spark
+RUN cd /opt \
+  && wget http://apache.crihan.fr/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz \
+  && tar xzf spark-1.6.1-bin-hadoop2.6.tgz \
+  && rm spark*.tgz \
+  && ls -lsah /opt
+RUN chown -R alan:alan /opt/spark*
+
+# Java
+RUN apt-add-repository -y ppa:webupd8team/java \
+  && apt-get update -y \
+  && echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections \
+  && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections \
+  && apt-get install -y oracle-java8-installer
 
 # Network services exposed
 # SSH
@@ -185,4 +208,4 @@ RUN mkdir /current_dir
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
-#CMD ["/sbin/setuser", "alan2", "/home/alan2/startup"]
+#CMD ["/sbin/setuser", "alan3", "/home/alan3/startup"]
