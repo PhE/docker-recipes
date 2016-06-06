@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import os
+import subprocess
+
+readme_filepath = 'README'
+
+if not os.path.exists(readme_filepath):
+  readme_filepath = os.path.join('~', readme_filepath)
+  if not os.path.exists(readme_filepath):
+    readme_filepath = None
+
+if readme_filepath is not None:
+  subprocess.call('less %s' % readme_filepath, shell=True)
+else:
+  print("No README file to show.")

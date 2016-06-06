@@ -196,6 +196,11 @@ RUN apt-add-repository -y ppa:webupd8team/java \
   && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections \
   && apt-get install -y oracle-java8-installer
 
+
+# Add banner message
+COPY banner /home/alan/
+COPY README /home/alan/
+
 # Network services exposed
 # SSH
 EXPOSE 22
