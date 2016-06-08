@@ -9,10 +9,13 @@ MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 # To force apt-get update
-RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
+RUN apt-get update \
+  && apt-get upgrade -y -o Dpkg::Options::="--force-confold" \
+  && apt-get autoremove \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Usefull tools
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
   byobu \
   gdebi-core \
   git \
@@ -20,26 +23,47 @@ RUN apt-get update && apt-get install -y \
   lynx \
   p7zip-full \
   unzip \
-  wget
+  vim \
+  wget \
+  && apt-get autoremove \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# glusterfs
+RUN apt-get install -y software-properties-common \
+  && add-apt-repository ppa:gluster/glusterfs-3.7 \
+  && apt-get update \
+  && apt-get install -y glusterfs-server \
+  && apt-get autoremove \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Java
+RUN apt-add-repository -y ppa:webupd8team/java \
+  && apt-get update -y \
+  && echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections \
+  && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections \
+  && apt-get install -y oracle-java8-installer \
+  && apt-get autoremove \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 # Miniconda installer
 RUN mkdir /opt/install
 RUN cd /opt/install \
-  && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-
-RUN cd /opt/install \
- && bash Miniconda3-latest-Linux-x86_64.sh -p /miniconda -b \
- && rm Miniconda3-latest-Linux-x86_64.sh
+  && wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+  && bash Miniconda3-latest-Linux-x86_64.sh -p /miniconda -b \
+  && rm Miniconda3-latest-Linux-x86_64.sh
 
 ENV PATH=/miniconda/bin:${PATH}
 
 # conda update conda
-RUN conda update -y conda
+RUN conda update -y conda \
+    && conda clean -i -l -t -y
 
 # Python packages from conda
 RUN conda install -y \
     blaze \
     bokeh \
+    cryptography \
     Cython \
     distributed \
     flask \
@@ -59,16 +83,34 @@ RUN conda install -y \
     scipy \
     statsmodels \
     scikit-learn \
+    webob \
     xlrd \
     XlsxWriter \
-    xlwt
-
+    xlwt \
+    && conda clean -i -l -t -y
 
 RUN conda install -y -c r \
-    r-essentials
+    r-essentials \
+    && conda clean -i -l -t -y
 
-# vim (if you prefer to edit your code inside the container)
-RUN apt-get install -y vim
+# nbpresent
+# cf https://github.com/Anaconda-Platform/nbpresent
+RUN conda install -y -c anaconda-nb-extensions \
+  nbpresent \
+  && conda clean -i -l -t -y
+
+
+# Spark
+RUN cd /opt \
+  && wget http://apache.crihan.fr/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz \
+  && tar xzf spark-1.6.1-bin-hadoop2.6.tgz \
+  && rm spark*.tgz \
+  && ls -lsah /opt \
+  && chown -R alan:alan /opt/spark*
+
+
+
+# - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
 
 # Add user Alan (with group, password, sudo)
 RUN groupadd -g 1000 alan \
@@ -76,10 +118,42 @@ RUN groupadd -g 1000 alan \
   && echo 'alan:alan' | chpasswd \
   && adduser alan sudo \
   && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-WORKDIR /home/alan
+
+# Add user Alan2 (with group, password, sudo)
+RUN groupadd -g 40561 alan2 \
+  && useradd -m -u 40561 -s /bin/bash -g alan2 alan2 \
+  && echo 'alan2:alan2' | chpasswd \
+  && adduser alan2 sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# Add user Alan3 (with group, password, sudo)
+RUN groupadd -g 1002 alan3 \
+  && useradd -m -u 1002 -s /bin/bash -g alan3 alan3 \
+  && echo 'alan3:alan3' | chpasswd \
+  && adduser alan3 sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Set default byobu shortcut behaviour to screen (ctrl-A)
-RUN /sbin/setuser alan byobu-ctrl-a screen
+RUN /sbin/setuser alan byobu-ctrl-a screen \
+  && /sbin/setuser alan2 byobu-ctrl-a screen
+  && /sbin/setuser alan3 byobu-ctrl-a screen
+
+
+WORKDIR /home/alan
+
+# Add byobu/tmux sessions launcher script
+COPY startup /home/alan/
+COPY startup /home/alan2/
+COPY startup /home/alan3/
+
+# Add banner message
+COPY banner /home/alan/
+COPY README /home/alan/
+
+# - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
+
+RUN mkdir /current_dir
+
 
 # Add french locale support
 RUN locale-gen fr_FR.UTF-8 \
@@ -103,19 +177,19 @@ RUN apt-get install --yes zlib1g-dev gcc make git autoconf \
   autogen automake pkg-config \
   && git clone https://github.com/firehol/netdata.git --depth=1 \
   && cd netdata \
-  && ./netdata-installer.sh --dont-wait
+  && ./netdata-installer.sh --dont-wait \
+  && apt-get autoremove \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# nbpresent
-# cf https://github.com/Anaconda-Platform/nbpresent
-RUN conda install -y -c anaconda-nb-extensions nbpresent
-
-RUN conda install -y cryptography webob
 
 RUN pip install --upgrade \
+  cppimport \
   ipython-sql \
   quantecon \
   pyotp \
-  pyqrcode
+  pyqrcode \
+  && rm -rf /root/.cache/pip/*
+
 
 # Julia and iJulia
 #RUN cd /tmp \
@@ -148,59 +222,6 @@ RUN pip install --upgrade \
 #  && python -m textblob.download_corpora
 
 
-# glusterfs
-RUN apt-get install -y software-properties-common \
-  && add-apt-repository ppa:gluster/glusterfs-3.7 \
-  && apt-get update \
-  && apt-get install -y glusterfs-server
-
-# Add user Alan2 (with group, password, sudo)
-RUN groupadd -g 40561 alan2 \
-  && useradd -m -u 40561 -s /bin/bash -g alan2 alan2 \
-  && echo 'alan2:alan2' | chpasswd \
-  && adduser alan2 sudo \
-  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-# Add user Alan3 (with group, password, sudo)
-RUN groupadd -g 1002 alan3 \
-  && useradd -m -u 1002 -s /bin/bash -g alan3 alan3 \
-  && echo 'alan3:alan3' | chpasswd \
-  && adduser alan3 sudo \
-  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-# Add byobu/tmux sessions launcher script
-COPY startup /home/alan/
-
-# Set default byobu shortcut behaviour to screen (ctrl-A)
-RUN /sbin/setuser alan3 byobu-ctrl-a screen
-
-# Add byobu/tmux sessions launcher script
-COPY startup /home/alan3/
-
-RUN pip install --upgrade \
-  cppimport
-
-
-# Spark
-RUN cd /opt \
-  && wget http://apache.crihan.fr/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz \
-  && tar xzf spark-1.6.1-bin-hadoop2.6.tgz \
-  && rm spark*.tgz \
-  && ls -lsah /opt
-RUN chown -R alan:alan /opt/spark*
-
-# Java
-RUN apt-add-repository -y ppa:webupd8team/java \
-  && apt-get update -y \
-  && echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections \
-  && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections \
-  && apt-get install -y oracle-java8-installer
-
-
-# Add banner message
-COPY banner /home/alan/
-COPY README /home/alan/
-
 # Network services exposed
 # SSH
 EXPOSE 22
@@ -208,8 +229,6 @@ EXPOSE 22
 EXPOSE 8888
 # netdata
 EXPOSE 19999
-
-RUN mkdir /current_dir
 
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
