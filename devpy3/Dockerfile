@@ -8,14 +8,10 @@ MAINTAINER Philippe ENTZMANN <philippe.entzmann@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# To force apt-get update
+# To force apt-get update and install usefull tools
 RUN apt-get update \
   && apt-get upgrade -y -o Dpkg::Options::="--force-confold" \
-  && apt-get autoremove \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Usefull tools
-RUN apt-get install -y \
+  && apt-get install -y \
   byobu \
   gdebi-core \
   git \
@@ -55,59 +51,58 @@ RUN cd /opt/install \
 
 ENV PATH=/miniconda/bin:${PATH}
 
-# conda update conda
+# conda update and usefull tools
 RUN conda update -y conda \
+    && conda install -y \
+      blaze \
+      bokeh \
+      cryptography \
+      Cython \
+      distributed \
+      flask \
+      jupyter \
+      lxml \
+      matplotlib \
+      numexpr \
+      networkx \
+      nltk \
+      nose \
+      pandas \
+      pillow \
+      Sphinx \
+      openpyxl \
+      pytables \
+      seaborn \
+      scipy \
+      statsmodels \
+      scikit-learn \
+      webob \
+      xlrd \
+      XlsxWriter \
+      xlwt \
+    && conda install -y -c r \
+      r-essentials \
+    && conda install -y -c anaconda-nb-extensions \
+        nbpresent \
     && conda clean -i -l -t -y
-
-# Python packages from conda
-RUN conda install -y \
-    blaze \
-    bokeh \
-    cryptography \
-    Cython \
-    distributed \
-    flask \
-    jupyter \
-    lxml \
-    matplotlib \
-    numexpr \
-    networkx \
-    nltk \
-    nose \
-    pandas \
-    pillow \
-    Sphinx \
-    openpyxl \
-    pytables \
-    seaborn \
-    scipy \
-    statsmodels \
-    scikit-learn \
-    webob \
-    xlrd \
-    XlsxWriter \
-    xlwt \
-    && conda clean -i -l -t -y
-
-RUN conda install -y -c r \
-    r-essentials \
-    && conda clean -i -l -t -y
-
-# nbpresent
-# cf https://github.com/Anaconda-Platform/nbpresent
-RUN conda install -y -c anaconda-nb-extensions \
-  nbpresent \
-  && conda clean -i -l -t -y
-
 
 # Spark
 RUN cd /opt \
   && wget http://apache.crihan.fr/dist/spark/spark-1.6.1/spark-1.6.1-bin-hadoop2.6.tgz \
   && tar xzf spark-1.6.1-bin-hadoop2.6.tgz \
   && rm spark*.tgz \
-  && ls -lsah /opt \
-  && chown -R alan:alan /opt/spark*
+  && ls -lsah /opt
 
+
+# pip packages
+RUN pip install --upgrade \
+  cppimport \
+  ipython-sql \
+  quantecon \
+  pyotp \
+  pyqrcode \
+  python-redmine \
+  && rm -rf /root/.cache/pip/*
 
 
 # - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
@@ -135,7 +130,7 @@ RUN groupadd -g 1002 alan3 \
 
 # Set default byobu shortcut behaviour to screen (ctrl-A)
 RUN /sbin/setuser alan byobu-ctrl-a screen \
-  && /sbin/setuser alan2 byobu-ctrl-a screen
+  && /sbin/setuser alan2 byobu-ctrl-a screen \
   && /sbin/setuser alan3 byobu-ctrl-a screen
 
 
@@ -149,6 +144,8 @@ COPY startup /home/alan3/
 # Add banner message
 COPY banner /home/alan/
 COPY README /home/alan/
+
+RUN chown -R alan:alan /opt/spark*
 
 # - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
 
@@ -180,15 +177,6 @@ RUN apt-get install --yes zlib1g-dev gcc make git autoconf \
   && ./netdata-installer.sh --dont-wait \
   && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-
-RUN pip install --upgrade \
-  cppimport \
-  ipython-sql \
-  quantecon \
-  pyotp \
-  pyqrcode \
-  && rm -rf /root/.cache/pip/*
 
 
 # Julia and iJulia

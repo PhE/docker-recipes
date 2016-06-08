@@ -12,5 +12,5 @@ figlet -f big devpy3
 Shortcuts
 ----------------
 
-* http://CONTAINER_IP:5555 : IPython notebook
-* http://CONTAINER_IP:7999 : Web2py (admin password : toto)
+* http://localhost:5555 : IPython notebook
+* http://localhost:7999 : Web2py (admin password : toto)
