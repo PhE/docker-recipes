@@ -170,8 +170,18 @@ RUN \
 # Netdata
 # usage : /usr/sbin/netdata
 # http://127.0.0.1:19999/
-RUN apt-get install --yes zlib1g-dev gcc make git autoconf \
-  autogen automake pkg-config \
+RUN apt-get update \
+  && apt-get install --yes \
+    autoconf \
+    autogen \
+    automake \
+    build-essential \
+    gcc \
+    git \
+    make \
+    pkg-config \
+    uuid-dev \
+    zlib1g-dev \
   && git clone https://github.com/firehol/netdata.git --depth=1 \
   && cd netdata \
   && ./netdata-installer.sh --dont-wait \

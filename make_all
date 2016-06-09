@@ -10,9 +10,9 @@ export NEW_TAG=`date +%Y%m%d`
 git tag -f $NEW_TAG
 git push -f --tags
 
-DockerBuild devpy3 latest
+DockerBuild devpy3 latest \
+&& DockerBuild devpy3 $NEW_TAG
 #DockerBuild devpy latest
 #DockerBuild devionic latest
-#DockerBuild devpy3 $NEW_TAG
 #DockerBuild devpy $NEW_TAG
 #DockerBuild devionic $NEW_TAG
