@@ -26,7 +26,7 @@ byobu-tmux \
 # lower-right pane
 byobu-tmux \
   split-window -h \; \
-  send-keys "/opt/web2py/web2py.py -i 0.0.0.0 -a toto -p 7999" C-m
+  send-keys "sudo glusterd --debug" C-m
 # upper-right pane
 byobu-tmux \
   select-pane -t 0 \; \
@@ -41,15 +41,15 @@ byobu-tmux \
   new-window -n shell \; \
   send-keys "ifconfig" C-m
 # lower-left pane
-byobu-tmux \
-  split-window -v
+#byobu-tmux \
+#  split-window -v
 # lower-right pane
-byobu-tmux \
-  split-window -h
+#byobu-tmux \
+#  split-window -h
 # upper-right pane
-byobu-tmux \
-  select-pane -t 0 \; \
-  split-window -h
+#byobu-tmux \
+#  select-pane -t 0 \; \
+#  split-window -h
 
 # ===========================================================================
 # Window 4 : vim
