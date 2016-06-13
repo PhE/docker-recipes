@@ -219,7 +219,6 @@ RUN apt-get update \
 #RUN conda install -c https://conda.anaconda.org/sloria textblob \
 #  && python -m textblob.download_corpora
 
-
 # Network services exposed
 # SSH
 EXPOSE 22
@@ -231,3 +230,20 @@ EXPOSE 19999
 # Start the tmux sessions
 CMD ["/sbin/setuser", "alan", "/home/alan/startup"]
 #CMD ["/sbin/setuser", "alan3", "/home/alan3/startup"]
+
+
+# - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- -
+
+# ssh enable
+RUN rm -f /etc/service/sshd/down
+
+# gen keys
+#RUN ssh-keygen -t rsa -o /root/.ssh/id_rsa
+ADD id_rsa /root/.ssh/id_rsa
+ADD id_rsa.pub /root/.ssh/id_rsa.pub
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+RUN echo '\nPort 22222' >> /etc/ssh/sshd_config
+
+#cat ~/.ssh/known_hosts
+#|1|Qqk6RwztWjjhSbJxsciqKCEIogI=|kuIJblK47Rl+n9S095eO2K0sKWQ= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOyptzSq2Q5RUC8TRjwycQB8woGlCiM8cez1CCN3uyn5VHLEqxIgxEySrSuMARLL7RBUWwSfqXg35x2X7+bsPzo=
