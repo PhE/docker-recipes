@@ -31,7 +31,7 @@ byobu-tmux \
 byobu-tmux \
   select-pane -t 0 \; \
   split-window -h  \; \
-  send-keys "" C-m
+  send-keys "sudo /usr/sbin/sshd -D" C-m
 
 # ===========================================================================
 # Window 3 : shells

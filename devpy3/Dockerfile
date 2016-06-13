@@ -133,17 +133,7 @@ RUN /sbin/setuser alan byobu-ctrl-a screen \
   && /sbin/setuser alan2 byobu-ctrl-a screen \
   && /sbin/setuser alan3 byobu-ctrl-a screen
 
-
 WORKDIR /home/alan
-
-# Add byobu/tmux sessions launcher script
-COPY startup /home/alan/
-COPY startup /home/alan2/
-COPY startup /home/alan3/
-
-# Add banner message
-COPY banner /home/alan/
-COPY README /home/alan/
 
 RUN chown -R alan:alan /opt/spark*
 
@@ -158,10 +148,10 @@ RUN locale-gen fr_FR.UTF-8 \
 ENV LC_ALL=fr_FR.UTF-8
 ENV LANG=fr_FR.UTF-8
 
-# Tools to convert notebook to PDF
-#RUN apt-get install -y pandoc
 RUN \
-  cd /tmp \
+  apt-get update \
+  && apt-get install -y libgmp10 \
+  && cd /tmp \
   && wget https://github.com/jgm/pandoc/releases/download/1.17.0.2/pandoc-1.17.0.2-1-amd64.deb \
   && dpkg -i pandoc-1.17.0.2-1-amd64.deb \
   ; apt-get install -f --yes \
@@ -188,37 +178,31 @@ RUN apt-get update \
   && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Config SSH
+RUN rm -f /etc/service/sshd/down
+RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
+RUN ssh-keygen -t rsa -f /root/.ssh/id_rsa -q -N ""
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+RUN mkdir /home/alan/.ssh /home/alan2/.ssh /home/alan3/.ssh
+RUN cp -r /root/.ssh /home/alan/.
+RUN cp -r /root/.ssh /home/alan2/.
+RUN cp -r /root/.ssh /home/alan3/.
+COPY configssh /root/.ssh/config
+COPY configssh /home/alan/.ssh/config
+COPY configssh /home/alan2/.ssh/config
+COPY configssh /home/alan3/.ssh/config
+RUN chown -R alan:alan /home/alan/.ssh
+RUN chown -R alan2:alan2 /home/alan2/.ssh
+RUN chown -R alan3:alan3 /home/alan3/.ssh
 
-# Julia and iJulia
-#RUN cd /tmp \
-#  && apt-get -y install julia \
-#  && julia -e 'Pkg.init()' \
-#  && julia -e 'Pkg.add("IJulia")' \
-#  && julia -e 'Pkg.add("QuantEcon")' \
-#  && julia -e 'Pkg.add("PyPlot")'
+# Add byobu/tmux sessions launcher script
+COPY startup /home/alan/
+COPY startup /home/alan2/
+COPY startup /home/alan3/
 
-# Torch and iTorch
-#RUN cd /tmp \
-#  && git clone https://github.com/torch/distro.git ~/torch --recursive \
-#  && cd torch; bash install-deps; \
-#  && ./install.sh \
-#  && cd .. \
-#  && git clone https://github.com/facebook/iTorch.git \
-#  && cd iTorch
-#  && luarocks make
-
-# Redis and jupyter redis kernel
-#RUN apt-get install -y redis-server \
-#  && pip install redis_kernel
-#RUN conda install -y -c anaconda redis=2.6.9
-
-
-#RUN conda install -c https://conda.anaconda.org/nroth df2gspread
-#RUN conda install -c https://conda.anaconda.org/asmeurer mrjob
-#RUN conda install -c chdoig -c nbsantos mrjob
-#RUN conda install -c https://conda.anaconda.org/sloria textblob \
-#  && python -m textblob.download_corpora
-
+# Add banner message
+COPY banner /home/alan/
+COPY README /home/alan/
 
 # Network services exposed
 # SSH
