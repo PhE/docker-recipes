@@ -18,6 +18,7 @@ RUN apt-get update \
   htop \
   lynx \
   p7zip-full \
+  texlive-full \
   unzip \
   vim \
   wget \
@@ -84,6 +85,8 @@ RUN conda update -y conda \
       r-essentials \
     && conda install -y -c anaconda-nb-extensions \
         nbpresent \
+    && conda install -y -c https://conda.binstar.org/asmeurer \
+        pandoc \
     && conda clean -i -l -t -y
 
 # Spark
